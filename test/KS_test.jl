@@ -1,5 +1,5 @@
 using Test
-include("KS_Structure.jl")
+include("../src/KS_Structure.jl")
 
 println("-----------------------------------------------------")
 println("Test on the Parameter Grids")
@@ -32,13 +32,18 @@ println("-----------------------------------------------------")
 println("Test on Functions --- Maximum Iterations")
 println("-----------------------------------------------------")
 # Check that the maximum number of iterations was not reached 
-max_iter_B = 500 
-max_iter_ump = 10000
-sm = Stochastic(epsi_shocks);
-_, B_counter, counter = compute_ALM_coef!(sm, ksp, kss, zi_shocks, tol_ump = 1e-1, max_iter_ump = 10000, tol_B = 1e-1, max_iter_B = 500, update_B = 0.3, T_discard = 100);
+max_iter_B = 500; 
+max_iter_ump = 10000;
+
 @testset "Maximum Iterations Test" begin
-    @test B_counter <= max_iter_B # Regression Method failed to converge with tolerance
-    @test counter <= max_iter_ump # Euler Method failed to converge with tolerance
+
+    Random.seed!(0) 
+    zi_shocks, epsi_shocks = generate_shocks(ksp;); 
+    sm = Stochastic(epsi_shocks);
+    _, B_counter, counter = compute_ALM_coef!(sm, ksp, kss, zi_shocks, tol_ump = 1e-1, max_iter_ump = 10000, tol_B = 1e-1, max_iter_B = 500, update_B = 0.3, T_discard = 100);
+
+    @test B_counter <= max_iter_B # Regression Method converged within tolerance level
+    @test counter <= max_iter_ump # Euler Method converged within tolerance level
 end; 
 
 
