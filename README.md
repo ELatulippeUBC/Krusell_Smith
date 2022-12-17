@@ -16,7 +16,9 @@ The solution strategy is defined as follows:
 2. Compute the path of aggregate capital with the policy function found in 1.
 3. Update the coefficients of the aggregate law of motion (ALM) of the capital where agents approximate the ALM of capital with a log-linear equation
 	$\log(K_{t+1} = \beta_1 + \beta_2 \log (K_{t})$
-4. Stop when the coefficients of the true and approximated ALM of capital have converged. 
+4. Stop when the coefficients of the true and approximated ALM of capital have converged.
+
+One can improve the approximation of the ALM of capital by reducing the tolerance levels (tol_ump, tol_B) in the src/KS_Main.jl file. 
  
 ## Files
 The project includes the following files: 
