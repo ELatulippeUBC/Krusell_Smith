@@ -26,7 +26,6 @@ The project includes the following files:
 * test/KS_test.jl : It contains all the tests performed on src/KS_Structure.jl
 
 # Limitations
-* I was not able to complete the approximation of the (ALM) of capital with a neural network instead of log-linear equation. Thus, src/KS_Structure_NN.jl should be improved in future iterations of the project and only viewed this time as a reference. 
-* Eventhough, I followed the procedure detailed in https://julia.quantecon.org/software_engineering/testing.html, I had trouble running the code in the virtual environement since some packages (GLM, Distributions and others) would not be properly precompiled. I ran the code on VS Code with Julia 1.6.2
-* Moreover, I was also unable to link the repo with Codecov to test my code instead of doing the tests locally only. 
-	
+* I could not complete the approximation of the (ALM) of capital with a neural network instead of a log-linear equation. Thus, src/KS_Structure_NN.jl should be improved in future project iterations and only viewed this time as a reference. 
+* Even though I followed the procedure in https://julia.quantecon.org/software_engineering/testing.html, I had trouble running the code in the virtual environment since some packages (GLM, Distributions, and others) would not be adequately precompiled. I ran the code on VS Code with Julia 1.6.2
+* Moreover, I could not link the repo with Codecov to test my code instead of doing the tests locally only. 
