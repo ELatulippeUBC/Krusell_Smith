@@ -1,4 +1,6 @@
-include("KS_Structure.jl")
+#include("KS_Structure.jl")
+using Krusell_Smith
+
 using Plots     
 
 ksp = KSParameter(); # Create an instance of KSParameter defining parameters of the model
