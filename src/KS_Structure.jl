@@ -170,7 +170,7 @@ function solve_ump!(ksp::NamedTuple, kss::KSSolution; max_iter::Integer = 10000,
                 Kp, L = compute_Kp_L(K,s_i,kss.B,ksp)
                 for (k_i, k) = enumerate(k_grid)
                     wealth = (r(alpha,z,K,L)+1-delta)*k+w(alpha,z,K,L)*(eps*l_bar + mu*(1-eps)) # compute agents' wealth
-                    expec = Expectation_FOC(kss.k_opt[k_i, K_i, s_i], Kp, s_i, ksp)
+                    expec = Expectation_FOC(kss.k_opt[k_i, K_i, s_i], Kp, s_i, ksp, kss)
                     cn = (beta*expec)^(-1.0/theta) # Take the inverse the CRRA utility function 
                     k_opt_n[k_i, K_i, s_i] = wealth - cn # Compute optimal individual capital given cn 
                 end
@@ -189,11 +189,11 @@ function solve_ump!(ksp::NamedTuple, kss::KSSolution; max_iter::Integer = 10000,
     return counter
 end
 
-function Expectation_FOC(kp::Real, Kp::Real, s_i::Integer, ksp::NamedTuple)
+function Expectation_FOC(kp::Real, Kp::Real, s_i::Integer, ksp::NamedTuple, kss)
     @unpack  alpha, theta, delta, l_bar, mu = ksp 
     @unpack P = ksp.transmat
 
-    global expectation_term = 0.0
+    global expectation_term = 0.0 # I think global is unneeded here and in similar places in other functions. There is a somewhat confusing difference in the scoping rules for code in a function vs in the top-level of a script, see https://docs.julialang.org/en/v1/manual/variables-and-scoping/#scope-of-variables
     for s_n_i = 1:ksp.s_size
         zp, epsp = ksp.s_grid[s_n_i, 1], ksp.s_grid[s_n_i, 2]
         Kpp, Lp = compute_Kp_L(Kp, s_n_i, kss.B, ksp)
@@ -236,7 +236,7 @@ function simulate_aggregate_path!(ksp::NamedTuple, kss::KSSolution, zi_shocks::A
     end
     return nothing
 end
-epsi_zi_to_si(eps_i::Integer, z_i::Integer, z_size::Integer) = z_i + ksp.z_size*(eps_i-1)
+epsi_zi_to_si(eps_i::Integer, z_i::Integer, z_size::Integer) = z_i + z_size*(eps_i-1)
 
 function regression_ALM!(ksp::NamedTuple, kss::KSSolution, zi_shocks::Vector, K_ts::Vector; T_discard::Integer=100) 
     n_g = count(zi_shocks[T_discard+1:end-1] .== 1)
